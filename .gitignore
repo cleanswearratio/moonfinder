@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.vercel/
+
+# Local env — .env.example is the committed template.
+.env
+.env.local
+.env.*.local
+
+# Build-time Python toolchain. The ephemeris kernel is ~16 MB; never commit it.
+.venv/
+__pycache__/
+tools/.cache/
+
+.DS_Store

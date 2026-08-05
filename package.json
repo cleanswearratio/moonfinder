@@ -1,0 +1,11 @@
+{
+  "name": "moonfinder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Moon sign lead magnet — precomputed ingress tables, client-side lookup, one serverless function.",
+  "comment": "No `dependencies` block, deliberately: the ephemeris toolchain is build-time only (CLAUDE.md §1.5) and /api/subscribe stays framework-free. Scripts and devDependencies are added by the phase that first uses them — vitest in Phase 2, astronomy-engine and `validate` in Phase 3.",
+  "scripts": {
+    "generate": "$(test -x .venv/bin/python && echo .venv/bin/python || echo python3) tools/generate_ingress.py"
+  }
+}

@@ -1,0 +1,16 @@
+# Build-time only. None of this ships — see CLAUDE.md §1.5.
+#
+#   python3.11 -m venv .venv
+#   .venv/bin/pip install -r tools/requirements.txt
+#   npm run generate
+#
+# Pinned so the generated tables are reproducible.
+
+skyfield==1.54
+
+# Ships de421.bsp (the genuine 16,788,480-byte JPL kernel) as an MIT-licensed
+# package. Needed on build hosts that cannot reach naif.jpl.nasa.gov; harmless
+# elsewhere. generate_ingress.py falls back to Skyfield's downloader without it.
+skyfield-data==7.0.0
+
+# NOT pyswisseph — AGPL/paid-commercial, and this is a commercial funnel asset.

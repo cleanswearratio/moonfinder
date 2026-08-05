@@ -126,12 +126,28 @@ it makes the reveal screen feel complete.
 
 **Self-check assertions the script must run before writing output:**
 - deltas are strictly positive and monotonic in absolute time
-- every moon delta falls in `[3050, 3750]` minutes (~2.12–2.60 days)
+- every moon delta falls in `[2750, 3750]` minutes (~1.91–2.60 days)
 - sign sequence increments by exactly 1 mod 12 with zero skips or repeats
-- total moon ingress count is within 2% of `157 × years`
+- total moon ingress count is within 2% of `160.42 × years`
 - `sun` deltas fall in `[41000, 46000]` minutes
 
 Any assertion failure = hard exit, do not write the file.
+
+> **Two constants corrected in Phase 1**, measured against DE421 over
+> 1920–2035. Both originally rejected correct data.
+>
+> The rate was `157 × years` — that figure comes from the *synodic* month
+> (~13 lunations/yr × 12). Ingresses track *tropical* longitude, so the right
+> value is `12 × 365.25 / 27.321582 = 160.42/yr`. The run produced 18,609
+> ingresses, matching that to four digits; `157 × 116 yr = 18,212` misses by
+> 2.2%, just outside the ±2% gate.
+>
+> The moon delta floor was `3050` minutes, glossed as a 2.12-day minimum. A
+> perigee transit covers 30° at ~15.4°/day — 1.95 days — so the measured range
+> is `[2814, 3667]` and a 3050 floor rejected 24.9% of all gaps. Only the floor
+> moved; the original upper bound already cleared the observed maximum.
+>
+> The sun bounds were correct as written: 0 of 1,392 gaps fell outside.
 
 ---
 
@@ -184,6 +200,21 @@ independent ephemeris model), asserts for every single ingress timestamp:
 Every one of the ~18,000 boundaries must pass. Wire this into
 `npm run validate` and make it a prerequisite of `npm run build`. If Skyfield
 and Astronomy Engine disagree anywhere, the build fails.
+
+> **Measured in Phase 1, to settle before writing the validator.** A trial run
+> of exactly this check against the generated tables: **moon 18,609/18,609 pass**,
+> worst case 55.3 s from the boundary — inside ±60 s, but with only 4.7 s of
+> margin. The two models differ on the Moon by −2.29″ ± 10.61″ (max 30.4″):
+> zero-mean scatter, the signature of Astronomy Engine's truncated lunar series
+> against DE421's numerical integration. DE421 is the accurate side; Astronomy
+> Engine is a gross-error gate, not a precision reference.
+>
+> So a ±60 s tolerance is really a ~30″ tolerance in disguise, and it does not
+> transfer between bodies. The same check on the Sun fails 11 of 1,392 — not
+> from any error in the table (the Sun agrees to −0.34″ ± 0.95″) but because the
+> Sun moves 0.041″/s, so even 3.5″ of model difference becomes 86 s of time.
+> Prefer stating the gate in **arcseconds**, which is scale-free across bodies,
+> over seconds of time. §6 as written applies to `moon-ingress.json` only.
 
 This replaces hand-picked "known good" test dates, which are only as reliable
 as whoever wrote them down.

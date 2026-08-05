@@ -4,8 +4,16 @@
   "private": true,
   "type": "module",
   "description": "Moon sign lead magnet — precomputed ingress tables, client-side lookup, one serverless function.",
-  "comment": "No `dependencies` block, deliberately: the ephemeris toolchain is build-time only (CLAUDE.md §1.5) and /api/subscribe stays framework-free. Scripts and devDependencies are added by the phase that first uses them — vitest in Phase 2, astronomy-engine and `validate` in Phase 3.",
+  "comment": "No `dependencies` block, deliberately: the ephemeris toolchain is build-time only (CLAUDE.md §1.5) and /api/subscribe stays framework-free. Scripts and devDependencies are added by the phase that first uses them — astronomy-engine and `validate` arrive in Phase 3.",
   "scripts": {
-    "generate": "$(test -x .venv/bin/python && echo .venv/bin/python || echo python3) tools/generate_ingress.py"
+    "generate": "$(test -x .venv/bin/python && echo .venv/bin/python || echo python3) tools/generate_ingress.py",
+    "fixtures": "$(test -x .venv/bin/python && echo .venv/bin/python || echo python3) tools/gen_tz_fixtures.py",
+    "cities": "$(test -x .venv/bin/python && echo .venv/bin/python || echo python3) tools/trim_geonames.py",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   }
 }

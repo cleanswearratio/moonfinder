@@ -27,8 +27,23 @@ README is a shorter orientation for humans.
 
 ## Status
 
-Pre-build. `CLAUDE.md` is written; implementation has not started. See its
-Definition of Done (§11) for what "shipped" means.
+In progress. See the Definition of Done (§11 of `CLAUDE.md`) for what "shipped"
+means.
+
+- **Phase 1 — ingress tables.** Done. `npm run generate` emits both tables from
+  DE421 and passes every self-check: 18,609 moon ingresses, 1,392 sun, 33 KB
+  gzipped combined.
+- **Phase 2 — timezone conversion and city data.** Done. `src/lib/tz.ts` inverts
+  wall time to UTC through `Intl`, flagging DST-ambiguous and nonexistent
+  readings; 25 tests pass against fixtures derived from real tzdata.
+  `tools/trim_geonames.py` builds the city index.
+- **Phase 3 — cross-validation gate.** Next.
+- **Phases 4–5 — flow, ribbon, `/api/subscribe`.** Not started.
+
+Two spec constants and one platform assumption were corrected against measured
+data during Phases 1–2; each is recorded inline in `CLAUDE.md` beside the text it
+revises (§4 for the ingress rate and gap floor, §5 for what `Intl` actually knows
+about pre-1976 offsets, §6 for how the validation gate should be stated).
 
 ## Stack
 

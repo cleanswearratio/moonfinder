@@ -180,6 +180,37 @@ break every competitor tool:
 - A birth at 01:30 on a US fall-back date (ambiguous)
 
 Assert against known UTC values you derive from tzdata itself, not from memory.
+`tools/gen_tz_fixtures.py` does this: it reads the real IANA database through
+Python's `zoneinfo` and writes `tests/fixtures/tz-cases.json`. That is a
+different copy of the rules reached by a different code path from the ICU data
+`tz.ts` uses, so the suite measures the inversion algorithm rather than
+confirming its own assumptions.
+
+> **Measured in Phase 2 — the claim above about ICU is not reliable.** Comparing
+> `Intl` against real tzdata across 483 zones × 232 instants (112,056 checks):
+> **2,680 disagree, every one of them between 1920 and 1975.** From 1976 on,
+> `Intl` is exact everywhere we sampled. But 1,531 of those are off by **an hour
+> or more**, across 81 zones, worst case 12.5 h (Antarctica/McMurdo). Sub-minute
+> historical offsets are also rounded away — Amsterdam in June 1930 is
+> `+01:19:32` in tzdata and `+01:00` in ICU, so §5's own required fixture cannot
+> pass as written. It is kept as a documented failing assertion in
+> `tests/tz.test.ts`.
+>
+> Most affected zones are remote (Antarctic, Pacific, Caribbean), and the big
+> population centres — New York, London, Paris, Berlin, Kolkata, Tokyo, Shanghai,
+> São Paulo, Sydney, Lagos, Cairo — are clean across the whole span. The
+> populated exceptions are Amsterdam (to 1946), Stockholm, Oslo and Copenhagen
+> (1940s), Reykjavik, and Tijuana (1953–1975).
+>
+> Impact is bounded: a wrong offset only changes the answer when it moves the
+> birth across an ingress, so roughly `error / 3279 min` — about 1.8% of affected
+> births for a one-hour error. Worth knowing that ICU data also varies by engine
+> and version, so pre-1976 results are not identical across browsers.
+>
+> **Decision still open.** Living with it is defensible for a lead magnet. The
+> alternative that fits §1 is to precompute a correction table at build time from
+> real tzdata — the same move as the ingress tables, and it would remove the
+> engine-dependence entirely. Not built; flagged for a call.
 
 `tools/trim_geonames.py`: reduce `cities15000.txt` to
 `[name, admin1, countryCode, tzid, population]`, sort by population descending,

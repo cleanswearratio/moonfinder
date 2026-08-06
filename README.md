@@ -47,12 +47,14 @@ means.
   runtime dependencies, pushing the contact to ActiveCampaign with a token the
   browser never sees.
 
-All five phases are built, plus a follow-up pass: Lighthouse mobile scores are
-98/100/100/100 (performance/accessibility/best practices/SEO), webfonts are
-self-hosted so the page makes no third-party request at all, and `/privacy.html`
-is written. See the Definition of Done in `CLAUDE.md` §11 for what remains
-before this can go live — chiefly a run against a real ActiveCampaign test list,
-the GeoNames city dump, and a contact address on the privacy page.
+All five phases are built, plus two follow-up passes: a visual redesign (see
+`CLAUDE.md` §8a), and the launch checklist closing out one by one. Lighthouse
+mobile scores are 98/100/100/100 (performance/accessibility/best
+practices/SEO), webfonts are self-hosted, `/privacy.html` is written, and the
+full 34,076-city GeoNames index is live (`.github/workflows/fetch-cities.yml`
+fetches it — see `tools/README.md`). What remains before this can go live:
+a run against a real ActiveCampaign test list, and a contact address on the
+privacy page. See the Definition of Done in `CLAUDE.md` §11.
 
 ## Running it
 

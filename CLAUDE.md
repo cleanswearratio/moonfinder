@@ -543,12 +543,24 @@ launch. (Not legal advice — have someone check this if you run EU traffic.)
 > 4.5:1 for body text, so it moved to `#9aa3bd` (4.78:1); and there was no
 > favicon. Accessibility and Best Practices are both 100 now.
 
-> **Phase 4 note.** `public/data/cities.json` is not in the repo: the GeoNames
-> dump is CC-BY and must be fetched by whoever builds (`npm run cities`, see
-> `tools/README.md`). Until it exists, `cities.ts` falls back to ~60 built-in
-> major cities, which is also what protects the form if the fetch ever fails in
-> production. The four flows, all three §7 reveal states, the share link and the
-> honeypot were driven end to end in Chromium at 360 px.
+> **Phase 4 note.** `public/data/cities.json` was not originally in the repo,
+> since the GeoNames dump is CC-BY and must be fetched by whoever builds
+> (`npm run cities`, see `tools/README.md`). `cities.ts` falls back to ~60
+> built-in major cities when it is absent, which is also what protects the form
+> if the fetch ever fails in production. The four flows, all three §7 reveal
+> states, the share link and the honeypot were driven end to end in Chromium at
+> 360 px.
+>
+> **Closed out via `.github/workflows/fetch-cities.yml`.** GeoNames is
+> unreachable from some sandboxed build environments (the same block that hit
+> `naif.jpl.nasa.gov` in Phase 1), so city data fetching moved to a manual
+> GitHub Action on an ordinary hosted runner, which has normal internet access
+> and needs no credentials. Run: 34,076 cities, 356 time zones, 244 countries,
+> 1.33 MB raw — under the 1.5 MB target — verified server-side (correct
+> structure, sorted by population, capitals included per GeoNames convention
+> even at zero population) and client-side (autocomplete resolves cities well
+> outside the fallback list, e.g. Timbuktu and Reykjavik, with the full flow
+> driven end to end through a real, non-fallback city).
 
 ---
 

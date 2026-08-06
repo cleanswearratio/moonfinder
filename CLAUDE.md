@@ -380,6 +380,15 @@ Do not hardcode IDs in source.
 applicable. The `cusp-unresolved` segment is the one to build an offer against
 first — it is a self-identified group with an open question.
 
+> **Built in Phase 5 — one gap in the sequence above.** `POST /api/3/contactTags`
+> takes a **numeric tag id**, not a tag name, so step 3 cannot be called with
+> `moon-taurus` directly. Env vars are not the answer either: `moon-{sign}` is
+> twelve possible tags and `.env.example` has no slot for them. The function
+> therefore resolves each name through `GET /api/3/tags?filters[tag]=` and
+> creates it if absent, which also means the tags do not have to be set up by
+> hand before launch. Custom fields still come from `.env` as §9 requires —
+> those ids are fixed and few.
+
 **`.env.example`**
 ```
 AC_ACCOUNT=
@@ -438,9 +447,19 @@ launch. (Not legal advice — have someone check this if you run EU traffic.)
       is excluded by design; webfonts are the remaining third-party cost
 - [ ] Lighthouse performance and accessibility both ≥ 95 on mobile — not yet run
 - [ ] `/api/subscribe` creates the contact, subscribes to the list, sets all
-      seven custom fields, and applies tags — verified against a live test list
-- [ ] No API token reachable from the client bundle (grep the build output)
+      seven custom fields, and applies tags — **verified against a stubbed API
+      only** (14 tests pin the call order, request shapes and failure paths).
+      Still needs one run against a live test list, which needs real credentials
+- [x] No API token reachable from the client bundle (grep the build output)
+      — built with secrets set in the environment; token, account name,
+      `Api-Token` and `api-us1.com` are all absent from `dist/`
 - [x] GeoNames attribution present in footer
+
+> **Remaining before launch**, beyond the two boxes above: fetch the GeoNames
+> dump so `cities.json` exists (§5); write the privacy page the gate links to at
+> `/privacy` (§10 — the link is live and currently 404s); decide the pre-1976
+> timezone question in §5; and consider self-hosting the three webfonts, which
+> are the only third-party request left on the page.
 
 > **Phase 4 note.** `public/data/cities.json` is not in the repo: the GeoNames
 > dump is CC-BY and must be fetched by whoever builds (`npm run cities`, see

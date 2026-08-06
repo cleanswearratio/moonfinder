@@ -3,8 +3,15 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["vitest/globals"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "vitest/globals",
+      "node"
+    ],
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
@@ -16,5 +23,9 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["src", "tests", "api"]
+  "include": [
+    "src",
+    "tests",
+    "api"
+  ]
 }

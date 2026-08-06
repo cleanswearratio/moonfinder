@@ -43,7 +43,13 @@ means.
 - **Phase 4 — flow, cusp logic and the ribbon.** Done. Four screens, no
   framework. The reveal renders in 25 ms with no network request, and first load
   is 47.6 KB gzipped against a 400 KB budget.
-- **Phase 5 — `/api/subscribe`.** Next.
+- **Phase 5 — `/api/subscribe`.** Done. One Vercel function, no imports and no
+  runtime dependencies, pushing the contact to ActiveCampaign with a token the
+  browser never sees.
+
+All five phases are built. See the Definition of Done in `CLAUDE.md` §11 for
+what remains before this can go live — chiefly a run against a real
+ActiveCampaign test list, the GeoNames city dump, and a privacy page.
 
 ## Running it
 

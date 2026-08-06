@@ -19,6 +19,7 @@ import type { Reading } from '../lib/ingress.js';
 import { sign } from '../lib/signs.js';
 import { formatOffset } from '../lib/tz.js';
 import { moonProfile } from '../copy/report.js';
+import { brandMark } from './brand.js';
 import { el } from './dom.js';
 import { ribbon } from './ribbon.js';
 
@@ -115,6 +116,7 @@ export function screenReveal(options: RevealOptions): HTMLElement {
           : null);
 
   return el('section', { class: `reveal${cusp ? ' reveal--cusp' : ''}`, 'aria-live': 'polite' },
+    brandMark(),
     el('p', { class: 'reveal__kicker' }, cusp ? 'Your moon sign is one of two' : 'Your moon sign'),
     headline,
     dataLine(moon, tzid, place),

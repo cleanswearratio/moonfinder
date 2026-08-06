@@ -8,6 +8,7 @@
 
 import type { Reading } from '../lib/ingress.js';
 import { sign } from '../lib/signs.js';
+import { brandMark } from './brand.js';
 import { el } from './dom.js';
 
 export interface ThanksOptions {
@@ -40,6 +41,7 @@ export function screenThanks({ moon, email, shareUrl, onRestart }: ThanksOptions
   });
 
   return el('section', { class: 'thanks', 'aria-live': 'polite' },
+    brandMark(),
     el('h2', { class: 'thanks__title' }, 'Sent'),
     el('p', { class: 'thanks__lede' },
       cusp

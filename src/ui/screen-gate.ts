@@ -9,6 +9,7 @@
 
 import type { Reading } from '../lib/ingress.js';
 import { sign } from '../lib/signs.js';
+import { brandMark } from './brand.js';
 import { el } from './dom.js';
 
 export interface GateOptions {
@@ -89,6 +90,7 @@ export function screenGate({ moon, sun, birthYear, tzid, onDone }: GateOptions):
       }
     },
   },
+    brandMark(),
     el('h2', { class: 'gate__title' },
       cusp
         ? `Which one you are, and what it means`

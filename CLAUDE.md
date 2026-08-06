@@ -297,6 +297,14 @@ encodes the result in the URL hash so a friend lands on a prefilled reveal.
 
 ## 8. Design direction
 
+> **Superseded.** The original direction below — almanac and tide table, one
+> accent, "not the crystal shop" — was replaced on the owner's instruction: it
+> read as too austere and corporate for the audience. Kept here because the
+> reasoning still explains why the *structure* looks the way it does; the
+> ribbon, the mono data lines and the refusal to guess a sign all come from it.
+> What changed is the surface, not the substance. The current direction is in
+> §8a, and `src/styles/app.css` is the source of truth.
+
 The subject's world is the almanac and the tide table, not the crystal shop.
 Precision instruments, engraved plates, tabular data. Lean into the fact that
 this app is literally a lookup table of celestial events.
@@ -310,6 +318,55 @@ this app is literally a lookup table of celestial events.
 --muted    #8A93B0   secondary text on ground
 ```
 Do not add a second accent.
+
+---
+
+## 8a. Design direction (current)
+
+Warm dusk, and twelve signs that each own a colour. Still precise — the ribbon
+renders real data and mono is still reserved for genuinely tabular values — but
+inviting rather than clinical.
+
+**Palette**
+```
+--ground       #2A2444   violet indigo, mid stop of the page gradient
+--ground-deep  #1B1730   near-black violet, top of the gradient
+--ground-warm  #3A2647   plum, bottom of the gradient
+--surface      #FBF7EF   warm cream, the card
+--ink          #241C38   violet-black text on cream
+--muted        #B3AAD0   lavender-grey on ground, 6.68:1
+--gold         #F0B65C   CTA gradient, start
+--gold-deep    #E0864F   CTA gradient, end
+--rose         #E88FA8   third stop on the card's top edge
+```
+
+**The twelve sign colours.** `signHue()` in `src/lib/signs.ts` gives each sign a
+hue 30° apart, mirroring the 30° each sign occupies on the ecliptic — so
+adjacent signs are adjacent colours and a cusp always pairs two genuinely
+distinct ones. They are built in **OKLCH**, which holds perceived lightness
+constant as hue turns; all twelve therefore measure between **5.19 and 6.69:1**
+on the cream surface. HSL would have left the yellows muddy and the blues
+washed out, and four of the twelve illegible.
+
+The reveal sets `--sign-hue` on the card, which themes the headline, the
+kicker, the card's glow, the top edge, focus rings and the sun panel. The
+ribbon sets it per segment, so a sign boundary is a change of hue rather than
+just a hairline.
+
+> **Two things to know if you touch this.**
+>
+> `--sign` and friends are redeclared on `*` rather than composed once on
+> `:root`. A custom property containing `var()` resolves where it is *declared*,
+> so a root-level `--sign` bakes in the root hue and silently ignores every
+> per-element override — which is exactly the bug that first rendered both cusp
+> candidates in the same colour.
+>
+> The CTA is **ink on gold, not cream on gold**. The previous cream-on-brass
+> measured **2.13:1**, far under AA. Lighthouse still scored accessibility 100,
+> because the submit button is disabled on first load and axe skips disabled
+> controls — the failure was real but invisible to the audit. Ink on the gold
+> gradient is 5.93:1 at its darkest stop, and is now verified on the reveal
+> screen where the button is enabled and actually gets checked.
 
 **Type**
 - Display: **Bodoni Moda** — didone, high contrast, engraving-plate lineage.
@@ -334,9 +391,14 @@ user the ambiguity instead of describing it. That visual is the conversion
 argument.
 
 Keep everything else quiet. One orchestrated moment on reveal — the ribbon draws
-in, the marker lands, the sign name sets. Nothing animates after that. Respect
-`prefers-reduced-motion`. Keyboard focus visible throughout. Mobile first: the
-ribbon is horizontal-scroll-free at 360px.
+in, the marker lands, the sign name sets. Respect `prefers-reduced-motion`.
+Keyboard focus visible throughout. Mobile first: the ribbon is
+horizontal-scroll-free at 360px.
+
+> **Relaxed with §8a.** "Nothing animates after that" now has two exceptions,
+> both ambient and both disabled under `prefers-reduced-motion`: the background
+> colour blooms drift on a 34s cycle, and the oversized sign glyph behind the
+> headline floats on a 9s cycle. Nothing in the reading itself moves.
 
 **Copy rules.** Sentence case. Active voice. The button says what happens
 ("Send my full profile"), and the confirmation uses the same verb. Errors state

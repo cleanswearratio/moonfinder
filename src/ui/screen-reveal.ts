@@ -16,7 +16,7 @@
  */
 
 import type { Reading } from '../lib/ingress.js';
-import { sign } from '../lib/signs.js';
+import { sign, signHue } from '../lib/signs.js';
 import { formatOffset } from '../lib/tz.js';
 import { moonProfile } from '../copy/report.js';
 import { brandMark } from './brand.js';
@@ -88,13 +88,22 @@ export function screenReveal(options: RevealOptions): HTMLElement {
   const first = sign(moon.signs[0]!);
   const second = cusp ? sign(moon.signs[1]!) : null;
 
+  // Each sign carries its own hue (see signHue). On a cusp the two candidates
+  // sit 30 degrees apart on the wheel and therefore 30 degrees apart in colour,
+  // so the split reads as two distinct possibilities rather than one blur.
   const headline = cusp
     ? el('h1', { class: 'reveal__headline' },
-        el('span', { class: 'reveal__sign' }, first.name),
+        el('span', { class: 'reveal__sign', style: `--sign-hue:${signHue(first.index)}` }, first.name),
         el('span', { class: 'reveal__or' }, 'or'),
-        el('span', { class: 'reveal__sign' }, second!.name))
+        el('span', { class: 'reveal__sign', style: `--sign-hue:${signHue(second!.index)}` }, second!.name))
     : el('h1', { class: 'reveal__headline' },
         el('span', { class: 'reveal__sign' }, first.name));
+
+  // The glyph as an ornament behind the headline — the one purely decorative
+  // element on the page, and the reason the reveal reads as a moment.
+  const halo = el('div', { class: 'reveal__halo', 'aria-hidden': 'true' },
+    ...(cusp ? [first, second!] : [first]).map((s) =>
+      el('span', { class: 'reveal__halo-glyph', style: `--sign-hue:${signHue(s.index)}` }, s.glyph)));
 
   const body = cusp
     ? el('div', { class: 'reveal__body' },
@@ -115,7 +124,13 @@ export function screenReveal(options: RevealOptions): HTMLElement {
               'whatever time you were born.')
           : null);
 
-  return el('section', { class: `reveal${cusp ? ' reveal--cusp' : ''}`, 'aria-live': 'polite' },
+  return el('section', {
+    class: `reveal${cusp ? ' reveal--cusp' : ''}`,
+    'aria-live': 'polite',
+    // Themes the whole card — headline, rules, glow and CTA — off the sign.
+    style: `--sign-hue:${signHue(first.index)}`,
+  },
+    halo,
     brandMark(),
     el('p', { class: 'reveal__kicker' }, cusp ? 'Your moon sign is one of two' : 'Your moon sign'),
     headline,

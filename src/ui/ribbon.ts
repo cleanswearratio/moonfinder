@@ -16,7 +16,7 @@
  */
 
 import type { Reading } from '../lib/ingress.js';
-import { sign } from '../lib/signs.js';
+import { sign, signHue } from '../lib/signs.js';
 import { el, prefersReducedMotion } from './dom.js';
 
 const HOUR_MS = 3_600_000;
@@ -109,7 +109,9 @@ export function ribbon(reading: Reading, tzid: string): HTMLElement {
     track.append(el('div',
       {
         class: 'ribbon__segment',
-        style: `left:${left}%;width:${width}%`,
+        // Each stretch of the ribbon is tinted with the sign it represents, so
+        // the boundary is a change of colour and not just a hairline.
+        style: `left:${left}%;width:${width}%;--sign-hue:${signHue(segment.sign)}`,
         'data-sign': sign(segment.sign).name,
       },
       el('span', { class: 'ribbon__segment-label' },

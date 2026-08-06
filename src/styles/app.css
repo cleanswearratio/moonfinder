@@ -1,0 +1,438 @@
+/**
+ * CLAUDE.md §8. The almanac and the tide table, not the crystal shop.
+ * Precision instruments, engraved plates, tabular data.
+ *
+ * One accent — brass — and no second one. Everything else stays quiet so the
+ * ribbon and the sign name carry the page.
+ */
+
+:root {
+  --ground: #2e3552;   /* deep dusk indigo, page field */
+  --surface: #e4e2da;  /* cool bone, the result card */
+  --ink: #161a2b;      /* near-black text on bone */
+  --brass: #c08a3e;    /* the marker, the CTA */
+  --muted: #8a93b0;    /* secondary text on ground */
+
+  /* Derived only — tints of the five above, never a new hue. */
+  --rule: color-mix(in srgb, var(--ink) 16%, transparent);
+  --ink-soft: color-mix(in srgb, var(--ink) 68%, transparent);
+  --brass-soft: color-mix(in srgb, var(--brass) 22%, transparent);
+
+  --font-display: 'Bodoni Moda', 'Didot', 'Bodoni MT', Georgia, serif;
+  --font-body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --step: 1.25rem;
+  --card: 34rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ground);
+  color: var(--surface);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.page {
+  flex: 1;
+  width: 100%;
+  max-width: var(--card);
+  margin-inline: auto;
+  padding: clamp(1.25rem, 4vw, 2.5rem) 1.25rem 3rem;
+}
+
+#app > * { animation: none; }
+
+/* ---------------------------------------------------------------- the card */
+
+.form, .reveal, .thanks, .gate, .fatal {
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 3px;
+  padding: clamp(1.5rem, 5vw, 2.25rem);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 12%), 0 18px 40px -24px rgb(0 0 0 / 55%);
+}
+
+h1, h2 { margin: 0 0 0.5rem; font-weight: 400; line-height: 1.15; }
+p { margin: 0 0 var(--step); }
+p:last-child { margin-bottom: 0; }
+
+.form__title, .gate__title, .thanks__title, .fatal h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 6vw, 2.35rem);
+  letter-spacing: -0.01em;
+}
+
+.form__lede, .gate__lede, .thanks__lede {
+  color: var(--ink-soft);
+  margin-bottom: 1.75rem;
+}
+
+/* -------------------------------------------------------------- form parts */
+
+.field { margin-bottom: 1.5rem; }
+
+.field__label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.field__input {
+  width: 100%;
+  padding: 0.7rem 0.75rem;
+  font: inherit;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+
+.field__input:disabled { opacity: 0.45; }
+
+.field__note {
+  margin: 0.45rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.7rem;
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.toggle__box { width: 1.05rem; height: 1.05rem; accent-color: var(--brass); margin: 0; }
+
+.form__error {
+  margin: 0 0 1rem;
+  min-height: 1.25rem;
+  font-size: 0.875rem;
+  color: #8c2f2f;
+}
+
+.button {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--surface);
+  background: var(--brass);
+  border: 1px solid var(--brass);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.button:disabled { opacity: 0.4; cursor: not-allowed; }
+.button--quiet {
+  margin-top: 1.25rem;
+  color: var(--ink);
+  background: transparent;
+  border-color: var(--rule);
+  font-weight: 400;
+  width: auto;
+  padding: 0.6rem 1rem;
+}
+
+/* ---------------------------------------------------------- city combo box */
+
+.combo { position: relative; }
+
+.combo__list {
+  position: absolute;
+  z-index: 5;
+  inset-inline: 0;
+  top: calc(100% + 2px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  max-height: 15rem;
+  overflow-y: auto;
+  box-shadow: 0 12px 28px -18px rgb(0 0 0 / 60%);
+}
+
+.combo__option {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.combo__option.is-active, .combo__option:hover { background: var(--brass-soft); }
+.combo__meta { font-size: 0.8125rem; color: var(--ink-soft); text-align: right; }
+
+/* ------------------------------------------------------------- the reveal */
+
+.reveal__kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.reveal__headline {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 11vw, 3.75rem);
+  line-height: 1.02;
+  margin: 0 0 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.5rem;
+}
+
+.reveal__or {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* Mono is truthful here, not decorative: this is tabular astronomical data. */
+.reveal__data {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  margin-bottom: 1.5rem;
+}
+
+.reveal__data span + span::before { content: '· '; }
+
+.reveal__summary { font-size: 1.125rem; }
+.reveal__body { margin-top: 1.5rem; }
+.reveal__sun {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+}
+
+.reveal .button, .gate .button { margin-top: 1.75rem; }
+
+.notice {
+  margin: 1.25rem 0 0;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.875rem;
+  background: var(--brass-soft);
+  border-left: 2px solid var(--brass);
+}
+
+/* ------------------------------------------------------------- the ribbon */
+
+/* Padding leaves room for the marker head, which stands proud of the track. */
+.ribbon { margin: 0; padding-top: 7px; }
+
+/* The frame holds two layers: a clipped, scaling track and a static overlay. */
+.ribbon__frame { position: relative; }
+
+.ribbon__track {
+  position: relative;
+  height: 3.25rem;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+  transform: scaleX(0.02);
+  transform-origin: left center;
+  transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.is-drawn .ribbon__track { transform: scaleX(1); }
+
+.ribbon__segment {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding-inline: 0.55rem;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 1px solid var(--rule);
+}
+
+.ribbon__segment:last-of-type { border-right: 0; }
+.ribbon__segment:nth-of-type(even) { background: color-mix(in srgb, var(--ink) 6%, transparent); }
+
+.ribbon__segment-label {
+  position: relative;
+  z-index: 2; /* above the hatching, so the sign name stays crisp */
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  opacity: 0;
+  transition: opacity 260ms ease 520ms;
+}
+
+.is-drawn .ribbon__segment-label { opacity: 1; }
+.ribbon__glyph { font-size: 1rem; }
+
+/* The cusp state made visible: the width of what is not known. */
+.ribbon__band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--brass-soft) 0 3px,
+    transparent 3px 7px
+  );
+  border-inline: 1px solid var(--brass-soft);
+}
+
+.ribbon__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ribbon__boundary {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--ink);
+  opacity: 0.55;
+}
+
+.ribbon__marker {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 2px;
+  background: var(--brass);
+  opacity: 0;
+  transition: opacity 220ms ease 560ms;
+}
+
+.ribbon__marker::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  background: var(--brass);
+  transform: translate(-50%, -45%) rotate(45deg);
+}
+
+.is-drawn .ribbon__marker { opacity: 1; }
+
+.ribbon__caption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.75rem;
+  margin-top: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+.ribbon__caption span + span::before { content: '· '; }
+
+/* --------------------------------------------------------- gate and thanks */
+
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.privacy {
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.privacy__link, .footer a { color: inherit; }
+
+.thanks__note { font-size: 0.875rem; color: var(--ink-soft); }
+.thanks__email { font-family: var(--font-mono); font-size: 0.9em; }
+
+.share {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+.share__label {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.share__row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.share__input {
+  flex: 1 1 12rem;
+  min-width: 0;
+  padding: 0.6rem 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+
+.share__row .button--quiet { margin-top: 0; }
+
+.fatal__detail { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); }
+
+/* ------------------------------------------------------------------ footer */
+
+.footer {
+  max-width: var(--card);
+  margin-inline: auto;
+  padding: 0 1.25rem 2.5rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.footer p { margin: 0; }
+
+/* ----------------------------------------------------------------- motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .ribbon__track, .ribbon__segment-label, .ribbon__marker {
+    transition: none;
+  }
+  .ribbon__track { transform: none; }
+}

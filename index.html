@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Moon sign finder</title>
+    <meta
+      name="description"
+      content="Find the sign the Moon was in when you were born. Free, instant, and honest about the cases where the birth time decides it."
+    />
+    <meta name="theme-color" content="#2E3552" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Three families, one weight each where possible, all display=swap so text
+      paints in the fallback immediately. Self-hosting subsetted woff2 would cut
+      this further and remove the third-party hop — worth doing before launch.
+    -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=IBM+Plex+Mono:wght@400&family=Public+Sans:wght@400;600&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=IBM+Plex+Mono:wght@400&family=Public+Sans:wght@400;600&display=swap"
+      />
+    </noscript>
+
+    <!-- The answer is a lookup in these; fetch them alongside the bundle. -->
+    <link rel="preload" as="fetch" href="/data/moon-ingress.json" crossorigin />
+    <link rel="preload" as="fetch" href="/data/sun-ingress.json" crossorigin />
+  </head>
+  <body>
+    <main id="app" class="page">
+      <noscript>
+        <section class="form">
+          <h1 class="form__title">Moon sign finder</h1>
+          <p>
+            This page works out your moon sign in the browser, so it needs
+            JavaScript switched on. Nothing is sent anywhere until you ask for
+            the full profile.
+          </p>
+        </section>
+      </noscript>
+    </main>
+
+    <footer class="footer">
+      <!-- CC-BY 4.0 requires this attribution. §11 checks for it. -->
+      <p>
+        City data from
+        <a href="https://www.geonames.org/" rel="noopener noreferrer">GeoNames</a>,
+        licensed CC-BY 4.0. Positions computed from JPL DE421.
+      </p>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

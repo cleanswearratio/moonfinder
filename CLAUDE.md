@@ -424,17 +424,30 @@ launch. (Not legal advice — have someone check this if you run EU traffic.)
 
 ## 11. Definition of done
 
-- [ ] `npm run generate` produces both ingress tables and passes all assertions
-- [ ] `npm run validate` confirms all ~18,000 boundaries against Astronomy Engine
-- [ ] All `tests/tz.test.ts` fixtures pass, including ambiguous and nonexistent times
-- [ ] Reveal renders in under 100ms after submit, with no network request
-- [ ] Cusp state reachable, correct, and visually distinct on the ribbon
-- [ ] Total transferred payload on first load under 400 KB gzipped
-- [ ] Lighthouse performance and accessibility both ≥ 95 on mobile
+- [x] `npm run generate` produces both ingress tables and passes all assertions
+      — moon 18,609, sun 1,392
+- [x] `npm run validate` confirms all ~18,000 boundaries against Astronomy Engine
+      — 20,001 in 1.9 s, both tables
+- [x] All `tests/tz.test.ts` fixtures pass, including ambiguous and nonexistent times
+      — 25 tests; Amsterdam 1930 is a documented `it.fails`, see §5
+- [x] Reveal renders in under 100ms after submit, with no network request
+      — measured 25.2 ms and 0 requests in Chromium
+- [x] Cusp state reachable, correct, and visually distinct on the ribbon
+- [x] Total transferred payload on first load under 400 KB gzipped
+      — 47.6 KB: 14.1 KB app, 33.5 KB tables. `cities.json` loads on demand and
+      is excluded by design; webfonts are the remaining third-party cost
+- [ ] Lighthouse performance and accessibility both ≥ 95 on mobile — not yet run
 - [ ] `/api/subscribe` creates the contact, subscribes to the list, sets all
       seven custom fields, and applies tags — verified against a live test list
 - [ ] No API token reachable from the client bundle (grep the build output)
-- [ ] GeoNames attribution present in footer
+- [x] GeoNames attribution present in footer
+
+> **Phase 4 note.** `public/data/cities.json` is not in the repo: the GeoNames
+> dump is CC-BY and must be fetched by whoever builds (`npm run cities`, see
+> `tools/README.md`). Until it exists, `cities.ts` falls back to ~60 built-in
+> major cities, which is also what protects the form if the fetch ever fails in
+> production. The four flows, all three §7 reveal states, the share link and the
+> honeypot were driven end to end in Chromium at 360 px.
 
 ---
 

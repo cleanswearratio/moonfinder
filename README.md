@@ -40,7 +40,22 @@ means.
 - **Phase 3 — cross-validation gate.** Done. `npm run validate` re-checks all
   20,001 boundaries against Astronomy Engine in ~2s and runs as `prebuild`, so a
   disagreeing table cannot reach a deploy.
-- **Phases 4–5 — flow, ribbon, `/api/subscribe`.** Not started.
+- **Phase 4 — flow, cusp logic and the ribbon.** Done. Four screens, no
+  framework. The reveal renders in 25 ms with no network request, and first load
+  is 47.6 KB gzipped against a 400 KB budget.
+- **Phase 5 — `/api/subscribe`.** Next.
+
+## Running it
+
+```sh
+npm install
+npm run dev                    # or: npm run build && npm run preview
+```
+
+`npm run build` is gated by the cross-validation in §6 — a table Astronomy
+Engine disagrees with cannot reach a deploy. The city index is not committed
+(GeoNames is CC-BY); see `tools/README.md` to fetch it. Without it the form
+falls back to a short built-in list of major cities.
 
 Two spec constants and one platform assumption were corrected against measured
 data during Phases 1–2; each is recorded inline in `CLAUDE.md` beside the text it

@@ -9,26 +9,17 @@
       content="Find the sign the Moon was in when you were born. Free, instant, and honest about the cases where the birth time decides it."
     />
     <meta name="theme-color" content="#2E3552" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!--
-      Three families, one weight each where possible, all display=swap so text
-      paints in the fallback immediately. Self-hosting subsetted woff2 would cut
-      this further and remove the third-party hop — worth doing before launch.
+      Self-hosted, Latin-subset woff2 (src/styles/fonts.css, imported from
+      app.css). No third-party request for fonts — the last one on the page,
+      per CLAUDE.md §11, is gone. Preloaded because they gate the display
+      headline and mono data lines that render immediately on the reveal.
     -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=IBM+Plex+Mono:wght@400&family=Public+Sans:wght@400;600&display=swap"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=IBM+Plex+Mono:wght@400&family=Public+Sans:wght@400;600&display=swap"
-      />
-    </noscript>
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/public-sans.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/bodoni-moda.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/ibm-plex-mono.woff2" crossorigin />
 
     <!-- The answer is a lookup in these; fetch them alongside the bundle. -->
     <link rel="preload" as="fetch" href="/data/moon-ingress.json" crossorigin />

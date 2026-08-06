@@ -6,12 +6,17 @@
  * ribbon and the sign name carry the page.
  */
 
+@import './fonts.css';
+
 :root {
   --ground: #2e3552;   /* deep dusk indigo, page field */
   --surface: #e4e2da;  /* cool bone, the result card */
   --ink: #161a2b;      /* near-black text on bone */
   --brass: #c08a3e;    /* the marker, the CTA */
-  --muted: #8a93b0;    /* secondary text on ground */
+  /* Lightened from the spec's #8a93b0, which measures 3.94:1 on --ground —
+     under WCAG AA's 4.5:1 for body-size text. This hits 4.78:1 and reads as
+     the same muted blue-grey. */
+  --muted: #9aa3bd;    /* secondary text on ground */
 
   /* Derived only — tints of the five above, never a new hue. */
   --rule: color-mix(in srgb, var(--ink) 16%, transparent);
@@ -415,6 +420,45 @@ p:last-child { margin-bottom: 0; }
 .share__row .button--quiet { margin-top: 0; }
 
 .fatal__detail { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); }
+
+/* ---------------------------------------------------------------- privacy */
+
+.privacy-page__back {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+}
+
+.privacy-page__heading {
+  margin: 1.75rem 0 0.5rem;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.privacy-page__heading:first-of-type { margin-top: 2rem; }
+
+.privacy-page__list {
+  margin: 0 0 var(--step);
+  padding-left: 1.25rem;
+}
+
+.privacy-page__list li { margin-bottom: 0.35rem; }
+.privacy-page__list code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+  padding: 0.05em 0.35em;
+  border-radius: 2px;
+}
+
+.privacy-page__updated {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
 
 /* ------------------------------------------------------------------ footer */
 

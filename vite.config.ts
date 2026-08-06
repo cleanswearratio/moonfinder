@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
 /**
@@ -14,6 +15,14 @@ export default defineConfig({
     // from /public/data rather than bundled, so this covers app code only.
     chunkSizeWarningLimit: 150,
     reportCompressedSize: true,
+    rollupOptions: {
+      // Two static pages, per §10: the app itself, and the privacy page it
+      // links to. privacy.html carries no app logic — see src/privacy.ts.
+      input: {
+        index: resolve(__dirname, 'index.html'),
+        privacy: resolve(__dirname, 'privacy.html'),
+      },
+    },
   },
   server: { port: 5173 },
 });

@@ -1,0 +1,10 @@
+These fonts are licensed under the SIL Open Font License, Version 1.1, which
+permits redistribution — see https://openfontlicense.org/.
+
+  Bodoni Moda    https://fonts.google.com/specimen/Bodoni+Moda
+  IBM Plex Mono  https://fonts.google.com/specimen/IBM+Plex+Mono
+  Public Sans    https://fonts.google.com/specimen/Public+Sans
+
+Each woff2 in this directory is a Latin-subset build served unmodified from
+Google Fonts (fonts.gstatic.com), vendored here so the app makes no
+third-party font request at runtime.

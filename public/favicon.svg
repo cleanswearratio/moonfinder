@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- The favicon echoes the ribbon: ground field, brass marker on a rule. -->
+  <rect width="32" height="32" rx="6" fill="#2e3552" />
+  <line x1="6" y1="22" x2="26" y2="22" stroke="#8a93b0" stroke-width="1.4" opacity="0.55" />
+  <path d="M16 6 L21 15 L16 24 L11 15 Z" fill="#c08a3e" />
+</svg>

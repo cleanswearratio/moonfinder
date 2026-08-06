@@ -47,9 +47,12 @@ means.
   runtime dependencies, pushing the contact to ActiveCampaign with a token the
   browser never sees.
 
-All five phases are built. See the Definition of Done in `CLAUDE.md` §11 for
-what remains before this can go live — chiefly a run against a real
-ActiveCampaign test list, the GeoNames city dump, and a privacy page.
+All five phases are built, plus a follow-up pass: Lighthouse mobile scores are
+98/100/100/100 (performance/accessibility/best practices/SEO), webfonts are
+self-hosted so the page makes no third-party request at all, and `/privacy.html`
+is written. See the Definition of Done in `CLAUDE.md` §11 for what remains
+before this can go live — chiefly a run against a real ActiveCampaign test list,
+the GeoNames city dump, and a contact address on the privacy page.
 
 ## Running it
 

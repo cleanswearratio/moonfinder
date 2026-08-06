@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy — Moon sign finder</title>
+    <meta name="description" content="What Moon sign finder collects, what it sends to its email provider, and how to stop hearing from it." />
+    <meta name="theme-color" content="#2E3552" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script type="module" src="/src/privacy.ts"></script>
+  </head>
+  <body>
+    <main class="page">
+      <article class="form privacy-page">
+        <p class="reveal__kicker"><a href="/" class="privacy-page__back">Moon sign finder</a></p>
+        <h1 class="form__title">Privacy</h1>
+        <p class="form__lede">
+          Short version: your birth date, time, and city are used only in your
+          browser to work out your sign. Nothing about them is sent anywhere
+          unless you ask for your full profile — and even then, we send less
+          than you might expect.
+        </p>
+
+        <h2 class="privacy-page__heading">What stays in your browser</h2>
+        <p>
+          The birth date, time, and city you enter on the form are used only to
+          calculate a result on your own device. That calculation — a lookup
+          against precomputed astronomical tables — never leaves your browser,
+          and reaching the reveal screen involves no network request at all.
+          We do not see your birth date, your birth time, or the city you
+          entered, whether or not you go on to request the full profile.
+        </p>
+
+        <h2 class="privacy-page__heading">What we collect, and what we send</h2>
+        <p>
+          If you request the full profile, we ask for your email address. When
+          you submit it, your browser sends us:
+        </p>
+        <ul class="privacy-page__list">
+          <li>the email address you typed</li>
+          <li>your moon sign, and a second candidate sign if your birth time
+            leaves it ambiguous</li>
+          <li>your sun sign</li>
+          <li>the year you were born (not the month or day)</li>
+          <li>the time zone your birth city uses (for example
+            <code>America/New_York</code>), not the city name itself</li>
+          <li>whether you told us your exact birth time or not</li>
+        </ul>
+        <p>
+          That is the complete list. Your birth date, birth time, and city name
+          are not part of it — only the sign result and the birth year are. We
+          store no birth data anywhere except what is listed above.
+        </p>
+
+        <h2 class="privacy-page__heading">Where it goes</h2>
+        <p>
+          Everything above goes to our email service provider, which stores
+          your contact details and sends you the profile you asked for. We do
+          not run our own database — that provider is the only place your
+          email address is kept. We do not sell your information, and we do
+          not share it with anyone except that provider, who sends the email
+          on our behalf.
+        </p>
+
+        <h2 class="privacy-page__heading">Cookies and tracking</h2>
+        <p>
+          This site sets no cookies and runs no analytics or advertising
+          scripts. The only network requests it makes are for the page itself,
+          the tables it uses to calculate signs, and — only if you submit the
+          email form — the one request that sends your details to our email
+          provider.
+        </p>
+
+        <h2 class="privacy-page__heading">How to stop hearing from us</h2>
+        <p>
+          Every email we send includes an unsubscribe link, which removes you
+          immediately. You can also reply to any email we send you and ask us
+          to remove your details by hand.
+        </p>
+
+        <!--
+          TODO before launch: add a real contact address here. None exists yet
+          because none was configured for this project — see CLAUDE.md §10 and
+          §11's "Remaining before launch" note. Replying to a sent email works
+          in the meantime, since ActiveCampaign relays that to the account
+          holder, but a direct address is worth adding.
+        -->
+
+        <h2 class="privacy-page__heading">One caveat</h2>
+        <p>
+          This page describes what the code actually does, honestly, but it is
+          not legal advice. If you are sending this to visitors in the EU or
+          another jurisdiction with its own rules, have someone qualified check
+          this page before you rely on it.
+        </p>
+
+        <p class="privacy-page__updated">Last reviewed alongside the code that this page describes.</p>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <p>
+        City data from
+        <a href="https://www.geonames.org/" rel="noopener noreferrer">GeoNames</a>,
+        licensed CC-BY 4.0. Positions computed from JPL DE421.
+      </p>
+    </footer>
+  </body>
+</html>

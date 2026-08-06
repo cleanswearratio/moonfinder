@@ -445,7 +445,11 @@ launch. (Not legal advice — have someone check this if you run EU traffic.)
 - [x] Total transferred payload on first load under 400 KB gzipped
       — 47.6 KB: 14.1 KB app, 33.5 KB tables. `cities.json` loads on demand and
       is excluded by design; webfonts are the remaining third-party cost
-- [ ] Lighthouse performance and accessibility both ≥ 95 on mobile — not yet run
+- [x] Lighthouse performance and accessibility both ≥ 95 on mobile
+      — performance 98, accessibility 100, best practices 100, SEO 100
+      (mobile, simulated throttling, against `vite build` served statically).
+      The 2 points off performance are `http-server`'s missing cache headers,
+      which Vercel sets automatically on hashed static assets — not an app fix
 - [ ] `/api/subscribe` creates the contact, subscribes to the list, sets all
       seven custom fields, and applies tags — **verified against a stubbed API
       only** (14 tests pin the call order, request shapes and failure paths).
@@ -456,10 +460,26 @@ launch. (Not legal advice — have someone check this if you run EU traffic.)
 - [x] GeoNames attribution present in footer
 
 > **Remaining before launch**, beyond the two boxes above: fetch the GeoNames
-> dump so `cities.json` exists (§5); write the privacy page the gate links to at
-> `/privacy` (§10 — the link is live and currently 404s); decide the pre-1976
-> timezone question in §5; and consider self-hosting the three webfonts, which
-> are the only third-party request left on the page.
+> dump so `cities.json` exists (§5); add a real contact address to the privacy
+> page (marked with a `TODO` in `privacy.html` — none was ever configured for
+> this project); and decide the pre-1976 timezone question in §5.
+>
+> **Privacy page written.** `/privacy.html` describes what the code actually
+> sends, which is less than the generic version above implies: `screen-gate.ts`
+> transmits the email address, both candidate signs, birth **year** only, and
+> the birth time zone — never the birth date, birth time, or city name. The
+> page states that precisely rather than reusing this section's looser wording.
+> Linked as `/privacy.html` rather than the extensionless `/privacy` this
+> section names, so it resolves in `vite dev`, `vite preview`, and a plain
+> static deploy with no rewrite rule to configure.
+>
+> **Closed out in a follow-up pass.** Webfonts are now self-hosted as
+> Latin-subset woff2 in `public/fonts/` (OFL-1.1, redistribution permitted) —
+> the page makes no third-party request at all now, not just under the 400 KB
+> budget. Running Lighthouse also caught two real defects the earlier text-only
+> checks couldn't: `--muted` on `--ground` measured 3.94:1, under WCAG AA's
+> 4.5:1 for body text, so it moved to `#9aa3bd` (4.78:1); and there was no
+> favicon. Accessibility and Best Practices are both 100 now.
 
 > **Phase 4 note.** `public/data/cities.json` is not in the repo: the GeoNames
 > dump is CC-BY and must be fetched by whoever builds (`npm run cities`, see

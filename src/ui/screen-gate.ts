@@ -115,7 +115,7 @@ export function screenGate({ moon, sun, birthYear, tzid, onDone }: GateOptions):
       'We send this to your email address and store your result with our email ' +
       'provider. We do not sell it, and every email we send has an unsubscribe ' +
       'link. ',
-      el('a', { href: '/privacy', class: 'privacy__link' }, 'Privacy'), '.'),
+      el('a', { href: '/privacy.html', class: 'privacy__link' }, 'Privacy'), '.'),
   );
 
   return form;

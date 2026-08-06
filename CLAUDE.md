@@ -232,20 +232,29 @@ Every one of the ~18,000 boundaries must pass. Wire this into
 `npm run validate` and make it a prerequisite of `npm run build`. If Skyfield
 and Astronomy Engine disagree anywhere, the build fails.
 
-> **Measured in Phase 1, to settle before writing the validator.** A trial run
-> of exactly this check against the generated tables: **moon 18,609/18,609 pass**,
-> worst case 55.3 s from the boundary — inside ±60 s, but with only 4.7 s of
-> margin. The two models differ on the Moon by −2.29″ ± 10.61″ (max 30.4″):
-> zero-mean scatter, the signature of Astronomy Engine's truncated lunar series
-> against DE421's numerical integration. DE421 is the accurate side; Astronomy
-> Engine is a gross-error gate, not a precision reference.
+> **Built in Phase 3, and the gate is stated in arcseconds.** All 20,001
+> boundaries pass in ~2 s: moon 18,609 and sun 1,392, both tables checked.
 >
-> So a ±60 s tolerance is really a ~30″ tolerance in disguise, and it does not
-> transfer between bodies. The same check on the Sun fails 11 of 1,392 — not
-> from any error in the table (the Sun agrees to −0.34″ ± 0.95″) but because the
-> Sun moves 0.041″/s, so even 3.5″ of model difference becomes 86 s of time.
-> Prefer stating the gate in **arcseconds**, which is scale-free across bodies,
-> over seconds of time. §6 as written applies to `moon-ingress.json` only.
+> The two models differ on the Moon by −2.29″ ± 10.61″ (max 30.4″) — zero-mean
+> scatter, the signature of Astronomy Engine's truncated lunar series against
+> DE421's numerical integration. DE421 is the accurate side; Astronomy Engine is
+> a gross-error gate, not a precision reference. On the Sun they agree far more
+> closely, −0.34″ ± 0.95″.
+>
+> A ±60 s tolerance is really an angular tolerance in disguise, and the disguise
+> does not transfer between bodies: 60 s buys ~33″ of slack on the Moon but only
+> ~2.5″ on the Sun. So the same rule passes the Moon with 11.3 s to spare and
+> fails the Sun 11 times out of 1,392 — not from any error in the table, but
+> because the Sun moves 0.041″/s, so 3.5″ of model difference becomes 86 s of
+> time. The validator therefore gates on **angle**, with per-body limits set from
+> the measured spread (moon 45″, sun 15″) plus a bias limit to catch a systematic
+> frame or nutation error that scatter alone would hide. §6's ±60 s wording is
+> still enforced verbatim for the Moon, where it holds.
+>
+> The gate was shown to fail on purpose before being trusted: a single ingress
+> moved by **one minute** trips it (45.5″), as do an off-by-one `start_sign`
+> (108,030″), a dropped ingress (16,869″), and a 3-minute shift of the whole
+> table (139″).
 
 This replaces hand-picked "known good" test dates, which are only as reliable
 as whoever wrote them down.

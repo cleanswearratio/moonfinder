@@ -9,7 +9,7 @@ produces static JSON in `/public/data`. **None of it ships.**
 | `generate_ingress.py` | emits `moon-ingress.json` / `sun-ingress.json` (CLAUDE.md §4) |
 | `gen_tz_fixtures.py` | emits `tests/fixtures/tz-cases.json` from real tzdata (§5) |
 | `trim_geonames.py` | emits `cities.json` from the GeoNames dump (§5) |
-| `validate_ingress.mjs` | cross-checks the tables against Astronomy Engine (§6) — *Phase 3* |
+| `validate_ingress.mjs` | cross-checks the tables against Astronomy Engine (§6) |
 
 ## Setup
 
@@ -59,6 +59,31 @@ moon   18,609 ingresses  160.42/yr   gaps 2814–3667 min   93 KB raw / 31 KB gz
 sun     1,392 ingresses   12.00/yr   gaps 42395–45298 min  8 KB raw /  2 KB gz
 tz      818 fixture cases  226 ambiguous, 224 shifted
 ```
+
+## The validation gate
+
+`npm run validate` re-checks every committed boundary against Astronomy Engine,
+an independent implementation, and is wired as `prebuild` so it runs before any
+deploy. It is Node-only by design — Vercel has no Python, so this is the check
+that actually executes on the deploy host, and it re-verifies the tables'
+structure as well as their astronomy.
+
+It gates on **angle, not time**. §6 phrases the tolerance as ±60 s, but that is
+an angular tolerance in disguise and it does not transfer between bodies: 60 s
+buys ~33″ of slack on the Moon and ~2.5″ on the Sun. Limits are set per body from
+the measured model spread, with a bias limit alongside the max so a systematic
+frame or nutation error cannot hide inside ordinary scatter.
+
+To confirm the gate still bites, point it at a deliberately broken copy:
+
+```sh
+mkdir -p /tmp/bad && cp public/data/sun-ingress.json /tmp/bad/
+node -e "const t=require('./public/data/moon-ingress.json');t.deltas[9000]+=1;t.deltas[9001]-=1;
+         require('fs').writeFileSync('/tmp/bad/moon-ingress.json',JSON.stringify(t))"
+node tools/validate_ingress.mjs --data-dir /tmp/bad   # must exit 1
+```
+
+Moving a single ingress by **one minute** is enough to trip it.
 
 ## Rules
 

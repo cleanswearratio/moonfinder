@@ -37,7 +37,9 @@ means.
   wall time to UTC through `Intl`, flagging DST-ambiguous and nonexistent
   readings; 25 tests pass against fixtures derived from real tzdata.
   `tools/trim_geonames.py` builds the city index.
-- **Phase 3 — cross-validation gate.** Next.
+- **Phase 3 — cross-validation gate.** Done. `npm run validate` re-checks all
+  20,001 boundaries against Astronomy Engine in ~2s and runs as `prebuild`, so a
+  disagreeing table cannot reach a deploy.
 - **Phases 4–5 — flow, ribbon, `/api/subscribe`.** Not started.
 
 Two spec constants and one platform assumption were corrected against measured

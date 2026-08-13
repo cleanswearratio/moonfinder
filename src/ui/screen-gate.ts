@@ -5,12 +5,28 @@
  * moon profile, a cusp buys the resolver questions as well. Submit stays
  * disabled until the address passes a shape check, there is a hidden honeypot,
  * and success transitions in place rather than navigating.
+ *
+ * ---------------------------------------------------------------------------
+ * TEMPORARY — PREVIEW_SKIP_AC, requested by the owner while ActiveCampaign is
+ * broken. While true:
+ *   - any non-empty text passes where an email address would normally be
+ *     required (looksLikeEmail below)
+ *   - submit never calls POST /api/subscribe — it goes straight to onDone, so
+ *     the gate cannot fail against a backend that is not wired up yet
+ *
+ * This is live on production the moment it merges: real visitors hitting the
+ * deployed site can click through with garbage text and nothing is captured
+ * or sent anywhere. Flip this back to false (or delete the branches below it)
+ * as the first step of wiring up ActiveCampaign for real — searching this
+ * file for PREVIEW_SKIP_AC finds every line it touches.
  */
 
 import type { Reading } from '../lib/ingress.js';
 import { article, sign } from '../lib/signs.js';
 import { brandMark } from './brand.js';
 import { el } from './dom.js';
+
+const PREVIEW_SKIP_AC = true;
 
 export interface GateOptions {
   moon: Reading;
@@ -25,7 +41,9 @@ export interface GateOptions {
  * to stop an obvious slip before it costs the visitor a round trip.
  */
 export const looksLikeEmail = (value: string): boolean =>
-  /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(value.trim());
+  PREVIEW_SKIP_AC
+    ? value.trim().length > 0
+    : /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(value.trim());
 
 export function screenGate({ moon, sun, birthYear, tzid, onDone }: GateOptions): HTMLElement {
   const cusp = moon.kind === 'cusp';
@@ -63,6 +81,12 @@ export function screenGate({ moon, sun, birthYear, tzid, onDone }: GateOptions):
       submit.disabled = true;
       submit.textContent = 'Sending…';
       error.textContent = '';
+
+      // See PREVIEW_SKIP_AC above: no request goes out while this is true.
+      if (PREVIEW_SKIP_AC) {
+        onDone(email.value.trim());
+        return;
+      }
 
       try {
         const response = await fetch('/api/subscribe', {

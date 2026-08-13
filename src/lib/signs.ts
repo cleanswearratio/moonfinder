@@ -32,6 +32,15 @@ export function sign(index: number): Sign {
 export const signName = (index: number): string => sign(index).name;
 
 /**
+ * "a" or "an" for a sign name in running prose. A lookup rather than a
+ * vowel-letter heuristic, since only two of the twelve names need it — this
+ * is exactly correct for exactly these words rather than approximately
+ * correct for words in general.
+ */
+const VOWEL_LEAD = new Set<string>(['Aries', 'Aquarius']);
+export const article = (name: string): string => (VOWEL_LEAD.has(name) ? 'an' : 'a');
+
+/**
  * Hue for a sign, in OKLCH degrees.
  *
  * The zodiac is a 360° wheel cut into twelve equal 30° arcs, so the palette

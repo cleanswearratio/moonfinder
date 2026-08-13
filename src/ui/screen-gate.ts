@@ -8,7 +8,7 @@
  */
 
 import type { Reading } from '../lib/ingress.js';
-import { sign } from '../lib/signs.js';
+import { article, sign } from '../lib/signs.js';
 import { brandMark } from './brand.js';
 import { el } from './dom.js';
 
@@ -98,8 +98,9 @@ export function screenGate({ moon, sun, birthYear, tzid, onDone }: GateOptions):
 
     el('p', { class: 'gate__lede' },
       cusp
-        ? `Five questions that separate a ${primary.name} moon from a ${alternate!.name} ` +
-          'one, and the full profile for whichever you turn out to be.'
+        ? `Five questions that separate ${article(primary.name)} ${primary.name} moon from ` +
+          `${article(alternate!.name)} ${alternate!.name} one, and the full profile for ` +
+          'whichever you turn out to be.'
         : 'The long version: how this sign handles stress, rest, closeness and ' +
           'conflict, and where it tends to cost you.'),
 

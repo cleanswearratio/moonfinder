@@ -374,6 +374,16 @@ p:last-child { margin-bottom: 0; }
  * 5.93:1 at its darkest stop.
  */
 .button {
+  /* inline-flex rather than relying on the tag's default display: a <button>
+     is block-ish out of the box, but an <a> styled as .button (the tripwire
+     CTA) defaults to display:inline, which splits the gradient background and
+     padding across separate line boxes the moment the label wraps — a visibly
+     broken double-rectangle button. Flex makes both tags behave identically. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
   width: 100%;
   padding: 1rem 1.25rem;
   font: inherit;
@@ -700,6 +710,59 @@ p:last-child { margin-bottom: 0; }
 
 .thanks__note { font-size: 0.9375rem; color: var(--ink-soft); }
 .thanks__email { font-family: var(--font-mono); font-size: 0.9em; }
+
+/* -------------------------------------------------------------- tripwire */
+
+.tripwire {
+  margin-top: 1.75rem;
+  padding: 1.5rem;
+  background: var(--sign-wash);
+  border: 1.5px solid var(--sign-edge);
+  border-radius: 16px;
+}
+
+.tripwire__kicker {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sign);
+}
+
+.tripwire__lede {
+  margin: 0 0 1.1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.tripwire__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 1.1rem;
+}
+
+.tripwire__was {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+  text-decoration: line-through;
+}
+
+.tripwire__now {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  color: var(--sign);
+}
+
+.tripwire__price-note {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+.tripwire__button { margin-top: 0; }
 
 .share {
   margin-top: 1.75rem;

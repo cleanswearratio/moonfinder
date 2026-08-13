@@ -293,6 +293,24 @@ honeypot field. On success, transition in place — do not navigate.
 **Screen 4 — Thanks.** Confirm what was sent and where. Offer a share link that
 encodes the result in the URL hash so a friend lands on a prefilled reveal.
 
+> **Tripwire added, on the owner's instruction.** The thanks screen also shows
+> a single upsell tied to the visitor's own result — reusing the same profile
+> summary sentence the reveal already showed them, so the pitch reads as a
+> continuation ("this meets you at your current position") rather than a
+> generic offer bolted on afterward. It links out to an external sales page
+> (`wonderlandmethod.com`) rather than processing payment itself, so it does
+> not cross the "no payments in v1" line in §12 — this app never touches a
+> card. `screen-thanks.ts` has the copy and pricing; both are literal strings,
+> not configurable, since there is exactly one tripwire.
+>
+> Building this surfaced a real bug that predates it: `screen-gate.ts` and the
+> plain-text lede on this screen both wrote `a ${sign}`, which reads "a
+> Aquarius" and "a Aries" — wrong indefinite article for the two vowel-leading
+> signs. Fixed with `article()` in `lib/signs.ts`, a lookup over the two
+> affected names rather than a general vowel-letter heuristic, since exactly
+> two of the twelve names need it and a lookup is exactly correct for them
+> where a heuristic would only be approximately correct.
+
 ---
 
 ## 8. Design direction
